@@ -5,13 +5,13 @@
     <artifactId>sampleapp</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>sampleApp</name>
+    <name>sampleapp</name>
     <description>Simple web service app using spring configuration</description>
     <properties>
         <jackson.version>1.8.6</jackson.version>
         <spring.version>3.2.9.RELEASE</spring.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <tomcat.application.path>/sampleApp</tomcat.application.path>
+        <tomcat.application.path>/sampleapp</tomcat.application.path>
     </properties>
     <dependencies>
         <dependency>
@@ -68,6 +68,7 @@
 			</dependency>
     </dependencies>
     <build>
+        <finalName>sampleapp</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

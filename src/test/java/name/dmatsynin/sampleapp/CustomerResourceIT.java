@@ -7,9 +7,6 @@ import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.MappingJsonFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.internal.runners.statements.ExpectException;
-
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -113,8 +110,29 @@ public class CustomerResourceIT {
     public void shouldDeleteById() throws Exception {
         List<Object> providers = new ArrayList<Object>();
         providers.add(new org.codehaus.jackson.jaxrs.JacksonJsonProvider());
-        WebClient client = WebClient.create(endpointUrl + "/customers/3", providers);
-        Response r = client.accept("application/json").delete();
+
+        Address address = new Address();
+        address.setStreetAddress("Unit 2, 27 Remuera road");
+        address.setSuburb("To be deleted");
+        address.setCity("Auckland");
+        address.setPostcode("1022");
+        Customer customer = new Customer();
+        customer.setName("For deletions");
+        customer.setPhoneNumber("22287872");
+        customer.setFaxNumber("33887877");
+        customer.setAddress(address);
+
+        WebClient client = WebClient.create(endpointUrl + "/customers", providers);
+        Response r = client.accept("application/json").type("application/json").post(customer);
+        assertEquals(Response.Status.OK.getStatusCode(), r.getStatus());
+        MappingJsonFactory factory = new MappingJsonFactory();
+        JsonParser parser = factory.createJsonParser((InputStream) r.getEntity());
+        Customer addedCustomer = parser.readValueAs(Customer.class);
+        assertNotNull(addedCustomer.getId().longValue());
+        Long id = addedCustomer.getId();
+
+        client = WebClient.create(endpointUrl + "/customers/"+id, providers);
+        r = client.accept("application/json").delete();
         assertEquals(Response.Status.NO_CONTENT.getStatusCode(), r.getStatus());
     }
 }
