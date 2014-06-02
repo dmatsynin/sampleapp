@@ -1,28 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:jaxrs="http://cxf.apache.org/jaxrs"
-  xmlns:context="http://www.springframework.org/schema/context"
-  xsi:schemaLocation="
-http://www.springframework.org/schema/beans 
-http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
-http://cxf.apache.org/jaxrs
-http://cxf.apache.org/schemas/jaxrs.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://cxf.apache.org/jaxrs
+        http://cxf.apache.org/schemas/jaxrs.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
   <import resource="classpath:META-INF/cxf/cxf.xml" />
-
-  <context:property-placeholder/>
+  <context:property-placeholder location="/WEB-INF/application.properties"/>
   <context:annotation-config/>
-  <bean class="org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer"/>
-  <bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer"/>
 
+  <context:component-scan base-package="name.dmatsynin.sampleapp.entity"/>
+  <context:component-scan base-package="name.dmatsynin.sampleapp.server"/>
+  <context:component-scan base-package="name.dmatsynin.sampleapp.service"/>
 
+    <tx:annotation-driven/>
 
+    <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+
+    <bean id="persistenceProvider" class="org.hibernate.ejb.HibernatePersistence" />
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+          p:entityManagerFactory-ref="entityManagerFactory"/>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+          p:dataSource-ref="dataSource"/>
+
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+          p:driverClassName="${jdbc.driverClassName}"
+          p:url="${jdbc.url}"
+          p:username="${jdbc.username}"
+          p:password="${jdbc.password}"/>
 
    <jaxrs:server id="services" address="/">
     <jaxrs:serviceBeans>
-      <bean class="name.dmatsynin.sampleapp.HelloWorld" />
+      <bean class="name.dmatsynin.sampleapp.server.CustomerResource" />
     </jaxrs:serviceBeans>
     <jaxrs:providers>
         <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>

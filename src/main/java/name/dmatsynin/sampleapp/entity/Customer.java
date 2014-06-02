@@ -1,16 +1,31 @@
 package name.dmatsynin.sampleapp.entity;
 
+import javax.persistence.*;
+
 /**
  * Created by: dmatsynin
  * Date: 6/1/14
  */
 
+@Entity
+@Table(name = "customer")
 public class Customer {
 
+    private Long id;
     private String name;
-    private String phoneNuber;
+    private String phoneNumber;
     private String faxNumber;
-    private String address;
+    private Address address;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -20,12 +35,12 @@ public class Customer {
         this.name = name;
     }
 
-    public String getPhoneNuber() {
-        return phoneNuber;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPhoneNuber(String phoneNuber) {
-        this.phoneNuber = phoneNuber;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getFaxNumber() {
@@ -36,11 +51,13 @@ public class Customer {
         this.faxNumber = faxNumber;
     }
 
-    public String getAddress() {
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "address_id")
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 }

@@ -2,25 +2,19 @@ package name.dmatsynin.sampleapp.service;
 
 import name.dmatsynin.sampleapp.entity.Customer;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
+import java.util.List;
 
 /**
  * Created by: dmatsynin
- * Date: 6/1/14
+ * Date: 6/2/14
  */
-public class CustomerProvider {
+public interface CustomerProvider {
 
+    Customer getByName(String name);
 
-    private EntityManager em;
+    List getAll();
 
-    @PersistenceContext
-    public void setEm(EntityManager em) {
-        this.em = em;
-    }
+    Customer insert(Customer customer);
 
-    public Customer getByNamer() {
-       return em.find(Customer.class, null);
-    }
+    Customer update(Customer customer);
 }
