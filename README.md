@@ -1,4 +1,4 @@
-sampleapp
+name.dmatsynin.sampleapp
 =========
 
 Sample application to play with some technologies.
