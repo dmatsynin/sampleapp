@@ -3,6 +3,7 @@ package name.dmatsynin.sampleapp.service.impl;
 import name.dmatsynin.sampleapp.entity.Customer;
 import name.dmatsynin.sampleapp.service.CustomerProvider;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -40,18 +41,31 @@ public class CustomerProviderImpl implements CustomerProvider {
     }
 
     @Override
+    @Transactional
     public Customer insert(Customer customer) {
         em.persist(customer);
+        em.flush();
         return customer;
     }
 
     @Override
+    @Transactional
     public Customer update(Customer customer) {
         em.merge(customer);
         em.flush();
         return customer;
     }
 
+    @Override
+    public Customer getById(Long id) {
+        return em.find(Customer.class, id);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Customer customer) {
+        em.remove(getById(customer.getId()));
+    }
 
 
 }

@@ -17,4 +17,9 @@ public interface CustomerProvider {
     Customer insert(Customer customer);
 
     Customer update(Customer customer);
+
+    Customer getById(Long id);
+
+    void delete(Customer customer);
+
 }

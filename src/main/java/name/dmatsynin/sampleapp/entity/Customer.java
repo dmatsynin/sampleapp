@@ -51,7 +51,7 @@ public class Customer {
         this.faxNumber = faxNumber;
     }
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     public Address getAddress() {
         return address;

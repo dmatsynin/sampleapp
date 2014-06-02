@@ -11,6 +11,7 @@
         <jackson.version>1.8.6</jackson.version>
         <spring.version>3.2.9.RELEASE</spring.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <tomcat.application.path>/sampleApp</tomcat.application.path>
     </properties>
     <dependencies>
         <dependency>
@@ -97,7 +98,7 @@
                             </goals>
                             <configuration>
                                 <port>13000</port>
-                                <path>/jaxrs-service</path>
+                                <path>${tomcat.application.path}</path>
                                 <useSeparateTomcatClassLoader>true</useSeparateTomcatClassLoader>
                             </configuration>
                         </execution>
@@ -145,7 +146,7 @@
                         <phase>pre-integration-test</phase>
                         <configuration>
                             <port>${test.server.port}</port>
-                            <path>/sampleApp</path>
+                            <path>${tomcat.application.path}</path>
                             <fork>true</fork>
                             <useSeparateTomcatClassLoader>true</useSeparateTomcatClassLoader>
                         </configuration>
@@ -157,7 +158,7 @@
                         </goals>
                         <phase>post-integration-test</phase>
                         <configuration>
-                            <path>/sampleApp</path>
+                            <path>${tomcat.application.path}</path>
                         </configuration>
                     </execution>
                 </executions>
@@ -174,7 +175,7 @@
                         </goals>
                         <configuration>
                             <systemPropertyVariables>
-                                <service.url>http://localhost:${test.server.port}/sampleApp</service.url>
+                                <service.url>http://localhost:${test.server.port}${tomcat.application.path}</service.url>
                             </systemPropertyVariables>
                         </configuration>
                     </execution>
